@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title><%= title %> | PharMediSync</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="stylesheet" href="/css/portal.css"/>
+</head>
+
+<body>
+
+<div class="app-shell">
+
+  <% include ./sidebar %>
+
+  <div class="main-area">
+
+    <header class="top-header">
+      <span class="page-title"><%= title %></span>
+
+      <div class="header-actions">
+        <a href="/portal/notifications" class="header-badge">
+          🔔 <%= unread %> New
+        </a>
+
+        <div class="avatar">
+          <%= client.contact.charAt(0) %>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <div class="page-header">
+        <div>
+          <h1>Purchase Order Management</h1>
+          <p>Place and track your purchase orders.</p>
+        </div>
+
+        <a href="#placeOrder" class="btn btn-primary">
+          ＋ Place New Order
+        </a>
+      </div>
+
+
+      <!-- Orders Table -->
+
+      <div class="table-card">
+
+        <div class="table-header">
+          <h2>My Orders</h2>
+        </div>
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Order No.</th>
+              <th>Date</th>
+              <th>Items</th>
+              <th>Total Amount</th>
+              <th>Payment</th>
+              <th>Delivery</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+          <% orders.forEach(o => { %>
+
+            <tr>
+
+              <td><strong><%= o.id %></strong></td>
+
+              <td><%= o.date %></td>
+
+              <td><%= o.items %> items</td>
+
+              <td>₱<%= o.total.toLocaleString() %></td>
+
+              <td>
+
+                <% if(o.payment === 'Paid') { %>
+                  <span class="badge badge-success">Paid</span>
+
+                <% } else if(o.payment === 'Invoiced') { %>
+                  <span class="badge badge-info">Invoiced</span>
+
+                <% } else { %>
+                  <span class="badge badge-warning">Unpaid</span>
+                <% } %>
+
+              </td>
+
+              <td>
+
+                <% if(o.delivery === 'Delivered') { %>
+                  <span class="badge badge-success">Delivered</span>
+
+                <% } else if(o.delivery === 'In Transit') { %>
+                  <span class="badge badge-info">In Transit</span>
+
+                <% } else { %>
+                  <span class="badge badge-gray">Pending</span>
+                <% } %>
+
+              </td>
+
+              <td>
+
+                <% if(o.status === 'Completed') { %>
+                  <span class="badge badge-success">Completed</span>
+                <% } else { %>
+                  <span class="badge badge-warning">Active</span>
+                <% } %>
+
+              </td>
+
+              <td>
+                <a href="/portal/tracking" class="btn btn-outline btn-sm">
+                  Track
+                </a>
+              </td>
+
+            </tr>
+
+          <% }) %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+
+      <!-- Place Order Form -->
+
+      <div class="form-card mt-6" id="placeOrder">
+
+        <div class="form-title">
+          📋 Place New Purchase Order
+        </div>
+
+        <form method="POST" action="/portal/orders/place">
+
+          <div class="form-grid">
+
+            <div class="form-group full">
+
+              <label>Select Products</label>
+
+              <div id="productPicker"
+              style="display:grid;
+              grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+              gap:8px;
+              padding:10px;
+              border:1.5px solid var(--gray-200);
+              border-radius:8px;
+              max-height:200px;
+              overflow-y:auto">
+
+              <% catalog.forEach(p => { %>
+
+                <label class="product-pick"
+                style="display:flex;
+                align-items:center;
+                gap:8px;
+                padding:7px 10px;
+                border-radius:6px;
+                border:1px solid var(--gray-200);
+                cursor:pointer;
+                font-size:0.78rem;
+                color:var(--gray-800)">
+
+                  <input
+                  type="checkbox"
+                  name="products"
+                  value="<%= p.id %>"
+                  onchange="calcTotal()"
+                  style="accent-color:var(--red)"/>
+
+                  <%= p.icon %>
+                  <%= p.name %>
+                  — ₱<%= p.price %>
+
+                </label>
+
+              <% }) %>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="form-group">
+
+              <label>Quantity per Item</label>
+
+              <input
+              type="number"
+              name="qty"
+              id="qtyInput"
+              min="1"
+              value="1"
+              oninput="calcTotal()"/>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>Estimated Total (₱)</label>
+
+              <input
+              type="number"
+              name="total"
+              id="totalInput"
+              min="0"
+              step="0.01"
+              readonly
+              style="background:var(--gray-50)"/>
+
+            </div>
+
+
+            <input type="hidden" name="itemCount" id="itemCount" value="0"/>
+
+
+            <div class="form-group">
+
+              <label>Requested Delivery Date</label>
+
+              <input type="date" name="deliveryDate"/>
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>Special Instructions</label>
+
+              <input
+              type="text"
+              name="notes"
+              placeholder="e.g. Deliver to Barangay Hall Annex"/>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-actions">
+
+            <button type="submit" class="btn btn-primary">
+              Submit Purchase Order
+            </button>
+
+            <a href="/portal/orders" class="btn btn-outline">
+              Cancel
+            </a>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+const prices = JSON.parse('<%- JSON.stringify(Object.fromEntries(catalog.map(p => [p.id, p.price]))) %>');
+
+function calcTotal() {
+
+  const checked = [...document.querySelectorAll('input[name="products"]:checked')];
+
+  const qty = parseInt(document.getElementById('qtyInput').value) || 1;
+
+  const total = checked.reduce(function(sum, c) {
+    return sum + (prices[c.value] || 0) * qty;
+  }, 0);
+
+  document.getElementById('totalInput').value = total.toFixed(2);
+  document.getElementById('itemCount').value = checked.length;
+
+}
+
+</script>
+
+<script src="/js/main.js"></script>
+
+<script>
+
+  function calcTotal() {
+
+    const checked = [...document.querySelectorAll('input[name="products"]:checked')];
+
+    const qty =
+      parseInt(document.getElementById('qtyInput').value) || 1;
+
+    const total = checked.reduce(function(sum, c) {
+
+      return sum + (prices[c.value] || 0) * qty;
+
+    }, 0);
+
+    document.getElementById('totalInput').value =
+      total.toFixed(2);
+
+    document.getElementById('itemCount').value =
+      checked.length;
+
+  }
+
+</script>
+
+</body>
+</html>

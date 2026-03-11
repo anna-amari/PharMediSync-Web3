@@ -1,0 +1,62 @@
+<% include ../partials/head %>
+<% include ../partials/sidebar %>
+<div class="main-area">
+<% include ../partials/header %>
+<div class="content">
+
+  <div class="page-header">
+    <div><h1>Chatbot Handling</h1><p>Manage automated replies and escalated conversations.</p></div>
+    <div class="flex gap-3">
+      <span class="badge badge-warning" style="padding:8px 14px;font-size:0.78rem">⚠️ <%= chatLogs.filter(c=>c.status==='Pending'||c.status==='Escalated').length %> Need Attention</span>
+    </div>
+  </div>
+
+  <div class="chatbot-wrap">
+
+    <!-- Auto-Reply Rules -->
+    <div class="table-card" style="height:fit-content">
+      <div class="table-header"><h2>Auto-Reply Rules</h2></div>
+      <div style="padding:14px;display:flex;flex-direction:column;gap:8px">
+        <% Object.entries(autoReplies).forEach(([key,val]) => { %>
+        <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:10px 12px">
+          <div style="font-size:0.72rem;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Keyword: "<%= key %>"</div>
+          <div style="font-size:0.78rem;color:var(--gray-600)"><%= val %></div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- Chat Logs -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <% chatLogs.forEach(chat => { %>
+      <div class="chat-window" style="height:auto">
+        <div class="chat-header">
+          👤 <%= chat.client %>
+          <span style="margin-left:auto;font-size:0.7rem;opacity:0.8"><%= chat.time %></span>
+          <% if(chat.status==='Resolved') { %><span class="badge badge-success" style="margin-left:6px">Resolved</span>
+          <% } else if(chat.status==='Escalated') { %><span class="badge badge-danger" style="margin-left:6px">Escalated</span>
+          <% } else { %><span class="badge badge-warning" style="margin-left:6px">Pending</span><% } %>
+        </div>
+        <div class="chat-messages" style="max-height:200px">
+          <div class="msg user"><div class="msg-bubble"><%= chat.message %></div></div>
+          <% if(chat.reply) { %>
+          <div class="msg bot"><div class="msg-bubble">🤖 <%= chat.reply %></div></div>
+          <% } else { %>
+          <div class="msg bot"><div class="msg-bubble" style="background:var(--red-pale);color:var(--red);font-style:italic">⚠️ No automated match found. Staff reply required.</div></div>
+          <% } %>
+        </div>
+        <% if(!chat.reply || chat.status==='Escalated') { %>
+        <form method="POST" action="/chatbot/reply" style="display:flex;gap:8px;padding:12px;border-top:1px solid var(--gray-200)">
+          <input type="hidden" name="id" value="<%= chat.id %>"/>
+          <input type="text" name="reply" placeholder="Type your reply…" required style="flex:1;padding:8px 12px;border:1.5px solid var(--gray-200);border-radius:20px;font-size:0.82rem"/>
+          <button type="submit" class="btn btn-primary btn-sm">Send</button>
+        </form>
+        <% } %>
+      </div>
+      <% }) %>
+    </div>
+
+  </div>
+
+</div>
+<% include ../partials/footer %>

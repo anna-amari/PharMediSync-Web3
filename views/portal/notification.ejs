@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title><%= title %> | PharMediSync</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="stylesheet" href="/css/portal.css"/>
+</head>
+<body>
+<div class="app-shell">
+  <% include ./sidebar %>
+  <div class="main-area">
+    <header class="top-header">
+      <span class="page-title"><%= title %></span>
+      <div class="header-actions">
+        <a href="/portal/notifications" class="header-badge">🔔 <%= unread %> New</a>
+        <div class="avatar"><%= client.contact.charAt(0) %></div>
+      </div>
+    </header>
+    <div class="content">
+
+      <div class="page-header">
+        <div><h1>Notifications &amp; Announcements</h1><p>Stay updated with the latest from Robin Rose Trading.</p></div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="dash-card">
+        <h3>Your Notifications</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <% notifications.forEach(n => { %>
+          <div class="notification-card <%= n.read ? 'read' : 'unread' %>">
+            <span class="icon"><%= n.type==='success' ? '✅' : n.type==='warning' ? '⚠️' : 'ℹ️' %></span>
+            <div style="flex:1">
+              <div class="message"><%= n.message %></div>
+              <div class="time"><%= n.time %></div>
+            </div>
+            <% if(!n.read) { %><span class="badge badge-danger" style="flex-shrink:0">New</span><% } %>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Announcements -->
+      <div class="dash-card mt-6">
+        <h3>System Announcements</h3>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <% announcements.forEach(a => { %>
+          <div class="announcement <%= a.priority==='High' ? 'high' : a.priority==='Medium' ? 'medium' : 'low' %>">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <strong style="font-size:0.88rem"><%= a.title %></strong>
+              <% if(a.priority==='High') { %><span class="badge badge-danger">High</span>
+              <% } else if(a.priority==='Medium') { %><span class="badge badge-warning">Medium</span>
+              <% } else { %><span class="badge badge-gray">Low</span><% } %>
+            </div>
+            <p style="font-size:0.8rem;color:var(--gray-600);line-height:1.6"><%= a.body %></p>
+            <div style="font-size:0.7rem;color:var(--gray-400);margin-top:6px">📅 <%= a.date %></div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

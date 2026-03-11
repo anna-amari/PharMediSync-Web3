@@ -1,0 +1,67 @@
+<% include ../partials/head %>
+<% include ../partials/sidebar %>
+<div class="main-area">
+<% include ../partials/header %>
+<div class="content">
+
+  <div class="page-header">
+    <div><h1>Institutional Clients</h1><p>Manage institutional accounts, credit limits, and balances.</p></div>
+    <div class="flex gap-3">
+      <a href="/client/portal" class="btn btn-outline">🔗 Client Portal Preview</a>
+      <a href="#addClient" class="btn btn-primary">＋ Add Client</a>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header"><h2>Client Accounts</h2></div>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Client Name</th><th>Contact</th><th>Type</th><th>Credit Limit</th><th>Outstanding</th><th>Status</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <% clients.forEach(c => { %>
+        <tr>
+          <td><span style="font-size:0.72rem;color:var(--gray-400)"><%= c.id %></span></td>
+          <td>
+            <strong><%= c.name %></strong><br/>
+            <span style="font-size:0.72rem;color:var(--gray-400)"><%= c.email %></span>
+          </td>
+          <td><%= c.contact %><br/><span style="font-size:0.72rem;color:var(--gray-400)"><%= c.phone %></span></td>
+          <td><span class="badge badge-info"><%= c.type %></span></td>
+          <td>₱<%= c.creditLimit.toLocaleString() %></td>
+          <td><% if(c.balance>0) { %><span style="color:var(--red);font-weight:700">₱<%= c.balance.toLocaleString() %></span><% } else { %><span style="color:#065F46;font-weight:700">₱0</span><% } %></td>
+          <td>
+            <% if(c.status==='Active') { %><span class="badge badge-success">Active</span>
+            <% } else { %><span class="badge badge-gray">Inactive</span><% } %>
+          </td>
+          <td><button class="btn btn-outline btn-sm">View Orders</button></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Add Form -->
+  <div class="form-card mt-6" id="addClient">
+    <div class="form-title">🏢 Register New Institutional Client</div>
+    <form method="POST" action="/client/add">
+      <div class="form-grid">
+        <div class="form-group full"><label>Organization / Client Name</label><input type="text" name="name" required/></div>
+        <div class="form-group"><label>Contact Person</label><input type="text" name="contact" required/></div>
+        <div class="form-group"><label>Phone</label><input type="text" name="phone" required/></div>
+        <div class="form-group"><label>Email</label><input type="email" name="email" required/></div>
+        <div class="form-group">
+          <label>Client Type</label>
+          <select name="type"><option>LGU</option><option>Gov Health</option><option>Government</option><option>Private</option></select>
+        </div>
+        <div class="form-group"><label>Credit Limit (₱)</label><input type="number" name="creditLimit" min="0" required/></div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Register Client</button>
+        <a href="/client" class="btn btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+</div>
+<% include ../partials/footer %>

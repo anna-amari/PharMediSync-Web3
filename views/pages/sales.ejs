@@ -1,0 +1,81 @@
+<%- include('../partials/head') %>
+<%- include('../partials/sidebar') %>
+<div class="main-area">
+<%- include('../partials/header') %>
+<div class="content">
+
+  <div class="page-header">
+    <div><h1>Sales Orders</h1><p>Manage institutional client sales orders and deliveries.</p></div>
+    <a href="#newOrder" class="btn btn-primary">＋ New Sales Order</a>
+  </div>
+
+  <div class="kpi-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px">
+    <div class="kpi-card white"><div class="kpi-value"><%= salesOrders.length %></div><div class="kpi-label">Total Orders</div></div>
+    <div class="kpi-card white"><div class="kpi-value"><%= salesOrders.filter(o=>o.status==='Active').length %></div><div class="kpi-label">Active</div></div>
+    <div class="kpi-card white"><div class="kpi-value"><%= salesOrders.filter(o=>o.status==='Completed').length %></div><div class="kpi-label">Completed</div></div>
+    <div class="kpi-card white"><div class="kpi-value">₱<%= (totalSales/1000).toFixed(0) %>K</div><div class="kpi-label">Total Sales Value</div></div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header"><h2>Sales Order List</h2></div>
+    <table>
+      <thead>
+        <tr><th>SO No.</th><th>Client</th><th>Date</th><th>Items</th><th>Amount</th><th>Payment</th><th>Delivery</th><th>Status</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <% salesOrders.forEach(o => { %>
+        <tr>
+          <td><strong><%= o.id %></strong></td>
+          <td><%= o.client %></td>
+          <td><%= o.date %></td>
+          <td><%= o.items %></td>
+          <td>₱<%= o.total.toLocaleString() %></td>
+          <td>
+            <% if(o.payment==='Paid') { %><span class="badge badge-success">Paid</span>
+            <% } else if(o.payment==='Invoiced') { %><span class="badge badge-info">Invoiced</span>
+            <% } else { %><span class="badge badge-warning">Unpaid</span><% } %>
+          </td>
+          <td>
+            <% if(o.delivery==='Delivered') { %><span class="badge badge-success">Delivered</span>
+            <% } else if(o.delivery==='In Transit') { %><span class="badge badge-info">In Transit</span>
+            <% } else { %><span class="badge badge-gray">Pending</span><% } %>
+          </td>
+          <td>
+            <% if(o.status==='Completed') { %><span class="badge badge-success">Completed</span>
+            <% } else { %><span class="badge badge-warning">Active</span><% } %>
+          </td>
+          <td><button class="btn btn-outline btn-sm">View</button></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- New Sales Order Form -->
+  <div class="form-card mt-6" id="newOrder">
+    <div class="form-title">📝 Create New Sales Order</div>
+    <form method="POST" action="/sales/add">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Institutional Client</label>
+          <select name="client" required>
+            <option>LGU Iriga City</option><option>RHU Baao</option>
+            <option>BFAR Iriga</option><option>Iriga City Hall</option><option>LGU Nabua</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Number of Items</label><input type="number" name="items" min="1" required/></div>
+        <div class="form-group"><label>Total Amount (₱)</label><input type="number" name="total" min="0" step="0.01" required/></div>
+        <div class="form-group">
+          <label>Payment Status</label>
+          <select name="payment"><option>Unpaid</option><option>Invoiced</option><option>Paid</option></select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Create Sales Order</button>
+        <a href="/sales" class="btn btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+</div>
+<%- include('../partials/footer') %>
