@@ -1,62 +1,96 @@
-<% include ../partials/head %>
-<% include ../partials/sidebar %>
+<%- include('../partials/head') %>
+<%- include('../partials/sidebar') %>
+
 <div class="main-area">
-<% include ../partials/header %>
-<div class="content">
+  <%- include('../partials/header') %>
 
-  <div class="page-header">
-    <div><h1>Chatbot Handling</h1><p>Manage automated replies and escalated conversations.</p></div>
-    <div class="flex gap-3">
-      <span class="badge badge-warning" style="padding:8px 14px;font-size:0.78rem">⚠️ <%= chatLogs.filter(c=>c.status==='Pending'||c.status==='Escalated').length %> Need Attention</span>
-    </div>
-  </div>
+  <div class="content">
 
-  <div class="chatbot-wrap">
-
-    <!-- Auto-Reply Rules -->
-    <div class="table-card" style="height:fit-content">
-      <div class="table-header"><h2>Auto-Reply Rules</h2></div>
-      <div style="padding:14px;display:flex;flex-direction:column;gap:8px">
-        <% Object.entries(autoReplies).forEach(([key,val]) => { %>
-        <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:10px 12px">
-          <div style="font-size:0.72rem;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px">Keyword: "<%= key %>"</div>
-          <div style="font-size:0.78rem;color:var(--gray-600)"><%= val %></div>
-        </div>
-        <% }) %>
+    <div class="page-header">
+      <div>
+        <h1>Chatbot Handling</h1>
+        <p>Manage client messages and respond quickly with auto-replies.</p>
       </div>
     </div>
 
-    <!-- Chat Logs -->
-    <div style="display:flex;flex-direction:column;gap:16px">
-      <% chatLogs.forEach(chat => { %>
-      <div class="chat-window" style="height:auto">
-        <div class="chat-header">
-          👤 <%= chat.client %>
-          <span style="margin-left:auto;font-size:0.7rem;opacity:0.8"><%= chat.time %></span>
-          <% if(chat.status==='Resolved') { %><span class="badge badge-success" style="margin-left:6px">Resolved</span>
-          <% } else if(chat.status==='Escalated') { %><span class="badge badge-danger" style="margin-left:6px">Escalated</span>
-          <% } else { %><span class="badge badge-warning" style="margin-left:6px">Pending</span><% } %>
+    <!-- Chat Logs Table -->
+    <div class="table-card">
+      <div class="table-header">
+        <h2>Chat Logs</h2>
+        <div class="flex gap-3">
+          <input type="text" placeholder="Search chats…" style="padding:7px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:0.8rem" id="searchBox" oninput="filterTable('chatTable', this.value)" />
         </div>
-        <div class="chat-messages" style="max-height:200px">
-          <div class="msg user"><div class="msg-bubble"><%= chat.message %></div></div>
-          <% if(chat.reply) { %>
-          <div class="msg bot"><div class="msg-bubble">🤖 <%= chat.reply %></div></div>
-          <% } else { %>
-          <div class="msg bot"><div class="msg-bubble" style="background:var(--red-pale);color:var(--red);font-style:italic">⚠️ No automated match found. Staff reply required.</div></div>
-          <% } %>
-        </div>
-        <% if(!chat.reply || chat.status==='Escalated') { %>
-        <form method="POST" action="/chatbot/reply" style="display:flex;gap:8px;padding:12px;border-top:1px solid var(--gray-200)">
-          <input type="hidden" name="id" value="<%= chat.id %>"/>
-          <input type="text" name="reply" placeholder="Type your reply…" required style="flex:1;padding:8px 12px;border:1.5px solid var(--gray-200);border-radius:20px;font-size:0.82rem"/>
-          <button type="submit" class="btn btn-primary btn-sm">Send</button>
-        </form>
+      </div>
+      <table id="chatTable">
+        <thead>
+          <tr>
+            <th>ID</th><th>Client</th><th>Message</th><th>Reply</th><th>Time</th><th>Status</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% chatLogs.forEach(chat => { %>
+            <tr>
+              <td><span style="font-size:0.72rem;color:var(--gray-400)"><%= chat.id %></span></td>
+              <td><strong><%= chat.client %></strong></td>
+              <td><%= chat.message %></td>
+              <td><%= chat.reply ? chat.reply : '-' %></td>
+              <td><%= chat.time %></td>
+              <td>
+                <% if(chat.status==='Resolved') { %>
+                  <span class="badge badge-success">Resolved</span>
+                <% } else if(chat.status==='Escalated') { %>
+                  <span class="badge badge-warning">Escalated</span>
+                <% } else { %>
+                  <span class="badge badge-info">Pending</span>
+                <% } %>
+              </td>
+              <td>
+                <% if(!chat.reply) { %>
+                  <form action="/chatbot/reply" method="POST" style="display:flex;gap:6px">
+                    <input type="hidden" name="id" value="<%= chat.id %>">
+                    <input type="text" name="reply" placeholder="Type reply…" required style="flex:1"/>
+                    <button type="submit" class="btn btn-sm btn-primary">Send</button>
+                  </form>
+                <% } else { %>
+                  Replied
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Auto Replies -->
+    <div class="table-card mt-6">
+      <div class="table-header">
+        <h2>Auto Replies</h2>
+      </div>
+      <ul>
+        <% for(let key in autoReplies) { %>
+          <li><strong><%= key %>:</strong> <%= autoReplies[key] %></li>
         <% } %>
-      </div>
-      <% }) %>
+      </ul>
     </div>
 
   </div>
-
 </div>
-<% include ../partials/footer %>
+
+<%- include('../partials/footer') %>
+
+<script>
+  // Simple search filter for tables
+  function filterTable(tableId, query) {
+    const table = document.getElementById(tableId);
+    const tr = table.getElementsByTagName('tr');
+    query = query.toLowerCase();
+    for(let i=1;i<tr.length;i++){
+      const tds = tr[i].getElementsByTagName('td');
+      let match = false;
+      for(let j=0;j<tds.length-1;j++){
+        if(tds[j].innerText.toLowerCase().includes(query)){ match=true; break; }
+      }
+      tr[i].style.display = match ? '' : 'none';
+    }
+  }
+</script>
