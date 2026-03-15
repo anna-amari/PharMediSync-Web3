@@ -1,0 +1,64 @@
+<%- include('../partials/head') %>
+<%- include('../partials/sidebar') %>
+
+<div class="main-area">
+  <%- include('../partials/header') %>
+
+  <div class="content">
+
+    <div class="page-header">
+      <div><h1>BIR Compliance</h1><p>Official receipts, VAT computation, and tax reporting.</p></div>
+      <div class="flex gap-3">
+        <button class="btn btn-outline">⬇ Export Monthly PDF</button>
+        <button class="btn btn-primary">⬇ Export Excel (.xlsx)</button>
+      </div>
+    </div>
+
+    <div class="alert alert-warning">⚠️ BIR RR 11-2025 compliance: Ensure all OR numbers are sequential and TIN is printed on every receipt.</div>
+
+    <!-- Totals -->
+    <div class="kpi-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px">
+      <div class="kpi-card white"><div class="kpi-value">₱<%= Number(totals.gross).toLocaleString() %></div><div class="kpi-label">Gross Sales</div></div>
+      <div class="kpi-card white"><div class="kpi-value">₱<%= Number(totals.vatable).toLocaleString() %></div><div class="kpi-label">VATable Sales</div></div>
+      <div class="kpi-card white"><div class="kpi-value">₱<%= Number(totals.vat).toLocaleString() %></div><div class="kpi-label">Output VAT (12%)</div></div>
+      <div class="kpi-card white"><div class="kpi-value"><%= birRecords.length %></div><div class="kpi-label">ORs Issued</div></div>
+    </div>
+
+    <!-- OR Table -->
+    <div class="table-card">
+      <div class="table-header"><h2>Official Receipt Log</h2></div>
+      <table>
+        <thead>
+          <tr><th>OR No.</th><th>Date</th><th>Customer</th><th>Gross Sales</th><th>VATable Sales</th><th>VAT (12%)</th><th>Total</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <% birRecords.forEach(function(r){ %>
+            <tr>
+              <td><strong><%= r.orNo %></strong></td>
+              <td><%= r.date %></td>
+              <td><%= r.customer %></td>
+              <td>₱<%= Number(r.grossSales).toLocaleString() %></td>
+              <td>₱<%= Number(r.vatableSales).toFixed(2) %></td>
+              <td>₱<%= Number(r.vatAmount).toFixed(2) %></td>
+              <td><strong>₱<%= Number(r.total).toLocaleString() %></strong></td>
+              <td><button class="btn btn-outline btn-sm">🖨 Print OR</button></td>
+            </tr>
+          <% }) %>
+
+          <!-- Totals row -->
+          <tr style="background:var(--red-pale);font-weight:700">
+            <td colspan="3" style="text-align:right;padding-right:16px">TOTAL</td>
+            <td>₱<%= Number(totals.gross).toLocaleString() %></td>
+            <td>₱<%= Number(totals.vatable).toFixed(2) %></td>
+            <td>₱<%= Number(totals.vat).toFixed(2) %></td>
+            <td>₱<%= Number(totals.gross).toLocaleString() %></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

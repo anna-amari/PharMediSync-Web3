@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title><%= title %> | PharMediSync</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="stylesheet" href="/css/portal.css"/>
+</head>
+<body>
+<div class="app-shell">
+  <% include ./sidebar %>
+  <div class="main-area">
+    <header class="top-header">
+      <span class="page-title"><%= title %></span>
+      <div class="header-actions">
+        <a href="/portal/notifications" class="header-badge">🔔 <%= unread %> New</a>
+        <div class="avatar"><%= client.contact.charAt(0) %></div>
+      </div>
+    </header>
+    <div class="content">
+
+      <div class="page-header">
+        <div><h1>Delivery Schedule</h1><p>Upcoming and past deliveries for your account.</p></div>
+      </div>
+
+      <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+        <div class="kpi-card"><div class="kpi-value"><%= deliveries.length %></div><div class="kpi-label">Total Deliveries</div></div>
+        <div class="kpi-card white"><div class="kpi-value"><%= deliveries.filter(d=>d.status==='In Transit').length %></div><div class="kpi-label">In Transit</div></div>
+        <div class="kpi-card white"><div class="kpi-value"><%= deliveries.filter(d=>d.status==='Delivered').length %></div><div class="kpi-label">Delivered</div></div>
+      </div>
+
+      <div class="table-card mt-6">
+        <div class="table-header"><h2>Delivery Records</h2></div>
+        <table>
+          <thead><tr><th>Delivery ID</th><th>Order Ref.</th><th>Scheduled Date</th><th>Delivery Address</th><th>Driver</th><th>Contact</th><th>Status</th></tr></thead>
+          <tbody>
+            <% deliveries.forEach(d => { %>
+            <tr>
+              <td><strong><%= d.id %></strong></td>
+              <td><%= d.orderId %></td>
+              <td><%= d.scheduledDate %></td>
+              <td><%= d.address %></td>
+              <td><%= d.driver %></td>
+              <td><%= d.contact %></td>
+              <td>
+                <% if(d.status==='Delivered') { %><span class="badge badge-success">Delivered</span>
+                <% } else { %><span class="badge badge-info">In Transit</span><% } %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

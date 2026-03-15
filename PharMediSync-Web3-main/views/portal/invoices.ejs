@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title><%= title %> | PharMediSync</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="stylesheet" href="/css/portal.css"/>
+</head>
+<body>
+<div class="app-shell">
+  <% include ./sidebar %>
+  <div class="main-area">
+    <header class="top-header">
+      <span class="page-title"><%= title %></span>
+      <div class="header-actions">
+        <a href="/portal/notifications" class="header-badge">🔔 <%= unread %> New</a>
+        <div class="avatar"><%= client.contact.charAt(0) %></div>
+      </div>
+    </header>
+    <div class="content">
+
+      <div class="page-header">
+        <div><h1>Invoice &amp; Payment Records</h1><p>View and download your invoices.</p></div>
+      </div>
+
+      <% if(totalUnpaid > 0) { %>
+      <div class="alert alert-warning">⚠️ You have unpaid invoices totaling <strong>₱<%= totalUnpaid.toLocaleString() %></strong>. Please settle before the due date.</div>
+      <% } %>
+
+      <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+        <div class="kpi-card white"><div class="kpi-value"><%= invoices.length %></div><div class="kpi-label">Total Invoices</div></div>
+        <div class="kpi-card white"><div class="kpi-value"><%= invoices.filter(i=>i.paid).length %></div><div class="kpi-label">Paid</div></div>
+        <div class="kpi-card"><div class="kpi-value">₱<%= totalUnpaid.toLocaleString() %></div><div class="kpi-label">Unpaid Balance</div></div>
+      </div>
+
+      <div class="table-card mt-6">
+        <div class="table-header"><h2>Invoice List</h2></div>
+        <table>
+          <thead><tr><th>Invoice No.</th><th>Order Ref.</th><th>Amount</th><th>Date Issued</th><th>Due Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <% invoices.forEach(inv => { %>
+            <tr>
+              <td><strong><%= inv.id %></strong></td>
+              <td><%= inv.orderId %></td>
+              <td><strong>₱<%= inv.amount.toLocaleString() %></strong></td>
+              <td><%= inv.issued %></td>
+              <td class="due-date <%= !inv.paid ? 'unpaid' : '' %>"><%= inv.due %></td>
+              <td>
+                <% if(inv.paid) { %><span class="badge badge-success">Paid</span>
+                <% } else { %><span class="badge badge-danger">Unpaid</span><% } %>
+              </td>
+              <td style="display:flex;gap:6px">
+                <button class="btn btn-outline btn-sm">⬇ Download</button>
+                <% if(!inv.paid) { %><button class="btn btn-primary btn-sm">Pay Now</button><% } %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

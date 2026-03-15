@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title><%= title %> | PharMediSync</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="stylesheet" href="/css/portal.css"/>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="portal-sidebar">
+      <div class="sidebar-brand">
+        <h1>💊 PharMediSync</h1>
+        <p>Client Portal</p>
+      </div>
+
+      <div class="sidebar-role"><%= client.name %></div>
+
+      <nav class="sidebar-nav">
+        <a href="/portal" class="<%= active==='home' ? 'active':'' %>">
+          <span class="nav-icon">🏠</span> Home Dashboard
+        </a>
+        <a href="/portal/catalog" class="<%= active==='catalog' ? 'active':'' %>">
+          <span class="nav-icon">📦</span> Product Catalog
+        </a>
+        <a href="/portal/orders" class="<%= active==='orders' ? 'active':'' %>">
+          <span class="nav-icon">📋</span> Purchase Order Management
+        </a>
+        <a href="/portal/delivery" class="<%= active==='delivery' ? 'active':'' %>">
+          <span class="nav-icon">🚚</span> Delivery Schedule
+        </a>
+        <a href="/portal/tracking" class="<%= active==='tracking' ? 'active':'' %>">
+          <span class="nav-icon">📍</span> Order Tracking
+        </a>
+        <a href="/portal/history" class="<%= active==='history' ? 'active':'' %>">
+          <span class="nav-icon">🕐</span> Transaction History
+        </a>
+        <a href="/portal/invoices" class="<%= active==='invoices' ? 'active':'' %>">
+          <span class="nav-icon">🧾</span> Invoice and Payment Records
+        </a>
+        <a href="/portal/profile" class="<%= active==='profile' ? 'active':'' %>">
+          <span class="nav-icon">👤</span> Profile Management
+        </a>
+        <a href="/portal/notifications" class="<%= active==='notifications' ? 'active':'' %>">
+          <span class="nav-icon">🔔</span> Notifications
+          <% if(unread > 0) { %>
+            <span class="notif-dot"><%= unread %></span>
+          <% } %>
+        </a>
+        <a href="/">
+          <span class="nav-icon">🚪</span> Log Out
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Area -->
+    <div class="main-area">
+      <header class="top-header">
+        <span class="page-title"><%= title %></span>
+        <div class="header-actions">
+          <a href="/portal/notifications" class="header-badge">🔔 <%= unread %> New</a>
+          <span class="header-badge">📅 <%= new Date().toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'}) %></span>
+          <div class="avatar"><%= client.contact.charAt(0) %></div>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="page-header">
+          <div>
+            <h1>Welcome, <%= client.contact %>!</h1>
+            <p><%= client.name %> &nbsp;·&nbsp; <%= client.type %></p>
+          </div>
+          <a href="/portal/orders" class="btn btn-primary">＋ Place New Order</a>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+          <div class="kpi-card"><div class="kpi-value"><%= orders.length %></div><div class="kpi-label">Total Orders</div></div>
+          <div class="kpi-card"><div class="kpi-value"><%= orders.filter(o=>o.status==='Active').length %></div><div class="kpi-label">Active Orders</div></div>
+          <div class="kpi-card white"><div class="kpi-value">₱<%= client.balance.toLocaleString() %></div><div class="kpi-label">Outstanding Balance</div></div>
+          <div class="kpi-card white"><div class="kpi-value">₱<%= client.creditLimit.toLocaleString() %></div><div class="kpi-label">Credit Limit</div></div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="table-card mt-6">
+          <div class="table-header">
+            <h2>Recent Orders</h2>
+            <a href="/portal/orders" class="btn btn-outline btn-sm">View All</a>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Order No.</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Amount</th>
+                <th>Payment</th>
+                <th>Delivery</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% orders.slice(0,3).forEach(o => { %>
+              <tr>
+                <td><strong><%= o.id %></strong></td>
+                <td><%= o.date %></td>
+                <td><%= o.items %> items</td>
+                <td>₱<%= o.total.toLocaleString() %></td>
+                <td>
+                  <% if(o.payment==='Paid') { %><span class="badge badge-success">Paid</span>
+                  <% } else if(o.payment==='Invoiced') { %><span class="badge badge-info">Invoiced</span>
+                  <% } else { %><span class="badge badge-warning">Unpaid</span><% } %>
+                </td>
+                <td>
+                  <% if(o.delivery==='Delivered') { %><span class="badge badge-success">Delivered</span>
+                  <% } else if(o.delivery==='In Transit') { %><span class="badge badge-info">In Transit</span>
+                  <% } else { %><span class="badge badge-gray">Pending</span><% } %>
+                </td>
+                <td><a href="/portal/tracking" class="btn btn-outline btn-sm">Track</a></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Notifications preview -->
+        <div class="dash-card mt-6">
+          <h3>Recent Notifications</h3>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <% notifications.slice(0,3).forEach(n => { %>
+            <div class="notification-card <%= n.read ? 'read' : 'unread' %>">
+              <span class="icon"><%= n.type==='success' ? '✅' : n.type==='warning' ? '⚠️' : 'ℹ️' %></span>
+              <div>
+                <div class="message"><%= n.message %></div>
+                <div class="time"><%= n.time %></div>
+              </div>
+              <% if(!n.read) { %><span class="badge badge-danger" style="margin-left:auto;flex-shrink:0">New</span><% } %>
+            </div>
+            <% }) %>
+          </div>
+          <a href="/portal/notifications" class="btn btn-outline btn-sm mt-4">View All Notifications</a>
+        </div>
+
+      </div> <!-- end content -->
+    </div> <!-- end main-area -->
+
+  </div> <!-- end app-shell -->
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
