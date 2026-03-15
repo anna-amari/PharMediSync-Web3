@@ -30,6 +30,8 @@ app.use('/portal', require('./routes/client-portal'));
 const clientPortalRoutes = require('./routes/client-portal');
 app.use('/portal', clientPortalRoutes);
 
+app.use('/website', require('./routes/website'));
+
 app.use((req, res) => {
   res.status(404).render('pages/404', { title: '404 – Not Found', active: '' });
 });
