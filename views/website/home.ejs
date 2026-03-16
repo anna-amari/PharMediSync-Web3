@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Robin Rose Trading – Where Your Health Comes First</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/website.css"/>
+</head>
+<body class="w-body">
+<%- include('./_nav', { page:'home' }) %>
+
+<!-- HERO -->
+<section class="w-hero">
+  <div class="w-container">
+    <div class="w-hero-grid">
+      <div>
+        <div class="w-hero-chip">🏥 Bicol's Trusted Medical Supplier</div>
+        <h1 class="w-hero-title">Where Your<br/><span class="ac">Health</span><br/>Comes First</h1>
+        <p class="w-hero-sub">Offering top-quality medical supplies from brands like <strong style="color:white">Blue Cross, Indoplas, Rossmax</strong> & more! From emergency gear to hospital devices — affordable prices, exceptional service.</p>
+        <div class="w-hero-actions">
+          <a href="/website/products" class="w-btn w-btn-red w-btn-lg">Browse Products</a>
+          <a href="/website/contact"  class="w-btn w-btn-lg" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.88);border:2px solid rgba(255,255,255,0.25)">Request a Quote</a>
+        </div>
+        <div class="w-hero-stats">
+          <div><div class="w-stat-val">500+</div><div class="w-stat-lbl">Products</div></div>
+          <div><div class="w-stat-val">15+</div><div class="w-stat-lbl">Years Serving</div></div>
+          <div><div class="w-stat-val">80+</div><div class="w-stat-lbl">LGU Clients</div></div>
+          <div><div class="w-stat-val">24/7</div><div class="w-stat-lbl">Support</div></div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center">
+        <div class="w-hero-blob">
+          <div class="w-icon-grid">
+            <div class="w-icon-card"><div class="ic">🩺</div><div class="il">Diagnostics</div></div>
+            <div class="w-icon-card"><div class="ic">💊</div><div class="il">Medicines</div></div>
+            <div class="w-icon-card"><div class="ic">🧤</div><div class="il">PPE</div></div>
+            <div class="w-icon-card"><div class="ic">🏥</div><div class="il">Hospital Gear</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="w-trust">
+  <div class="w-trust-inner">
+    <div class="w-trust-item">✅ FDA Licensed Distributor</div>
+    <span class="w-trust-sep">·</span>
+    <div class="w-trust-item">🏛️ Serving LGUs across Camarines Sur</div>
+    <span class="w-trust-sep">·</span>
+    <div class="w-trust-item">🚚 Delivery & In-Store Pickup</div>
+    <span class="w-trust-sep">·</span>
+    <div class="w-trust-item">📞 0929 237 9053</div>
+    <span class="w-trust-sep">·</span>
+    <div class="w-trust-item">📍 Iriga City, Bicol</div>
+  </div>
+</div>
+
+<!-- BRANDS -->
+<div class="w-brands">
+  <div class="w-container">
+    <p class="w-brands-lbl">Trusted Brands We Carry</p>
+    <div class="w-brands-row">
+      <% ['Blue Cross','Indoplas','Rossmax','3M','Medline','BD Medical','Ansell','Kimberly-Clark','Cardinal Health','Hospira'].forEach(b=>{ %>
+      <div class="w-brand-pill"><%= b %></div>
+      <% }) %>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="w-section">
+  <div class="w-container">
+    <div style="text-align:center">
+      <div class="w-label" style="justify-content:center">Our Product Categories</div>
+      <h2 class="w-title">Everything for Healthcare, Under One Roof</h2>
+      <p class="w-sub" style="margin:0 auto">From everyday consumables to specialized diagnostic equipment, we stock what healthcare professionals need.</p>
+    </div>
+    <div class="w-cats-grid">
+      <% [
+        {icon:'🔬',name:'Diagnostics & Monitoring',   desc:'BP monitors, glucose meters, pulse oximeters, thermometers, and diagnostic kits.',      count:'120+ items',href:'/website/products'},
+        {icon:'🧤',name:'PPE & Safety',                desc:'Gloves, masks, gowns, goggles, face shields, and full PPE kits for healthcare workers.',  count:'85+ items', href:'/website/products'},
+        {icon:'💉',name:'Surgical & Consumables',      desc:'Syringes, catheters, IV sets, gauze, bandages, sutures, and surgical disposables.',        count:'200+ items',href:'/website/products'},
+        {icon:'🏥',name:'Hospital Equipment',          desc:'Hospital beds, stretchers, IV stands, wheelchairs, and rehabilitation equipment.',          count:'60+ items', href:'/website/products'},
+        {icon:'💊',name:'Pharmaceuticals',             desc:'OTC medicines, vitamins, first aid essentials, and emergency medications.',                 count:'90+ items', href:'/website/products'},
+        {icon:'🧴',name:'Sterilization & Hygiene',    desc:'Disinfectants, alcohol, sterilization pouches, and sanitation products.',                   count:'70+ items', href:'/website/products'},
+      ].forEach(c=>{ %>
+      <a href="<%= c.href %>" class="w-cat">
+        <div class="w-cat-icon"><%= c.icon %></div>
+        <div class="w-cat-name"><%= c.name %></div>
+        <div class="w-cat-desc"><%= c.desc %></div>
+        <div class="w-cat-count">→ <%= c.count %></div>
+      </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="w-section" style="background:var(--w-gray-50);padding-top:56px">
+  <div class="w-container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:6px">
+      <div>
+        <div class="w-label">Featured Products</div>
+        <h2 class="w-title" style="margin-bottom:0">Top Sellers This Month</h2>
+      </div>
+      <a href="/website/products" class="w-btn w-btn-out">View All Products →</a>
+    </div>
+    <div class="w-filter-bar" style="margin-bottom:28px">
+      <% ['All','Diagnostics','PPE','Surgical','Hygiene'].forEach((f,i)=>{ %>
+      <button class="w-filter <%= i===0?'wf-active':'' %>" onclick="wFilter('<%= f.toLowerCase() %>',this)"><%= f %></button>
+      <% }) %>
+    </div>
+    <div class="w-products-grid" id="wProdGrid">
+      <% featuredProducts.forEach(p=>{ %>
+      <div class="w-product" data-cat="<%= p.cat %>">
+        <div class="w-prod-img">
+          <%= p.icon %>
+          <% if(p.badge){%><span class="w-prod-badge"><%= p.badge %></span><%}%>
+        </div>
+        <div class="w-prod-body">
+          <div class="w-prod-sku">SKU: <%= p.sku %> · <span style="color:var(--w-gray-400)"><%= p.brand %></span></div>
+          <div class="w-prod-name"><%= p.name %></div>
+          <div class="w-prod-desc"><%= p.desc %></div>
+          <div class="w-prod-foot">
+            <div>
+              <div class="w-prod-price"><%= p.price?'₱'+p.price.toLocaleString():'Quote' %><% if(p.price&&p.unit){%><small> / <%= p.unit %></small><%}%></div>
+              <span class="<%= p.stock==='In Stock'?'w-stock-in':'w-stock-low' %>"><%= p.stock %></span>
+            </div>
+            <a href="/website/contact" class="w-btn w-btn-red w-btn-sm">Order</a>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="w-section w-why">
+  <div class="w-container">
+    <div class="w-why-grid">
+      <div>
+        <div class="w-label" style="color:#FF8B96"><span style="background:#FF8B96;width:22px;height:2px;display:inline-block;margin-right:8px;vertical-align:middle"></span>Why Robin Rose Trading</div>
+        <h2 class="w-title" style="color:white">Your Ultimate Healthcare Partner</h2>
+        <p style="color:rgba(255,255,255,.6);font-size:0.9rem;line-height:1.75;margin-bottom:6px">With affordable prices & exceptional service, we proudly serve LGUs, schools, hospitals, and barangays across Camarines Sur and the entire Bicol Region.</p>
+        <div class="w-why-list">
+          <% [
+            {icon:'🏛️',title:'Government & Institutional Trusted',desc:'Accredited supplier for LGU, RHU, hospitals, schools, and barangay health centers across Camarines Sur.'},
+            {icon:'📦',title:'500+ Products Always in Stock',     desc:'Wide selection from globally trusted brands — ready for delivery or in-store pickup.'},
+            {icon:'🚚',title:'Reliable Delivery Services',        desc:'Fast and secure delivery across Bicol Region. In-store pickup available at our Iriga City branch.'},
+            {icon:'✅',title:'FDA Licensed & Compliant',           desc:'All products are sourced from FDA-registered manufacturers with full documentation.'},
+          ].forEach(w=>{ %>
+          <div class="w-why-item">
+            <div class="w-why-icon"><%= w.icon %></div>
+            <div class="w-why-text"><h4><%= w.title %></h4><p><%= w.desc %></p></div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+      <div class="w-services">
+        <% [
+          {icon:'🏙️',name:'LGUs',         desc:'Local Government Units across Camarines Sur'},
+          {icon:'🏥',name:'Hospitals',     desc:'Public and private healthcare facilities'},
+          {icon:'🏫',name:'Schools',       desc:'Educational institutions & clinics'},
+          {icon:'🏘️',name:'Barangays',     desc:'Barangay health centers and health workers'},
+          {icon:'🚑',name:'RHUs',          desc:'Rural Health Units across the region'},
+          {icon:'🧑‍⚕️',name:'Clinics',    desc:'Private clinics and practitioners'},
+          {icon:'💼',name:'Businesses',    desc:'Corporate and industrial health offices'},
+          {icon:'🛒',name:'Walk-In',       desc:'Individual customers welcome in-store'},
+        ].forEach(s=>{ %>
+        <div class="w-service">
+          <div class="ss-ic"><%= s.icon %></div>
+          <div class="ss-nm"><%= s.name %></div>
+          <div class="ss-ds"><%= s.desc %></div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="w-section w-testi-bg">
+  <div class="w-container">
+    <div style="text-align:center">
+      <div class="w-label" style="justify-content:center">What Our Clients Say</div>
+      <h2 class="w-title">Trusted by Healthcare Providers Across Bicol</h2>
+    </div>
+    <div class="w-testi-grid">
+      <% [
+        {stars:'★★★★★',text:'Robin Rose Trading has been our go-to supplier for all RHU needs. Products are always genuine, prices are fair, and delivery is always on time.',name:'Dr. Felix Santos',org:'RHU Baao, Camarines Sur',init:'FS'},
+        {stars:'★★★★★',text:'As LGU Iriga, we rely on Robin Rose for our emergency medical stockpile. Their FDA-certified products and responsive team make procurement reliable.',name:'Procurement Officer',org:'LGU Iriga City',init:'LG'},
+        {stars:'★★★★★',text:'Excellent selection of PPE and surgical supplies. The PharMediSync system makes ordering and tracking easy for our health office.',name:'Ana Cruz, RN',org:'Iriga City Health Office',init:'AC'},
+      ].forEach(t=>{ %>
+      <div class="w-testi">
+        <div class="w-stars"><%= t.stars %></div>
+        <p class="w-testi-text"><%= t.text %></p>
+        <div class="w-author">
+          <div class="w-author-av"><%= t.init %></div>
+          <div><div class="w-author-nm"><%= t.name %></div><div class="w-author-org"><%= t.org %></div></div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="w-cta">
+  <div class="w-container">
+    <h2>Ready to Stock Up Your Facility?</h2>
+    <p>Get in touch for a free quote or product consultation.</p>
+    <div class="w-cta-btns">
+      <a href="/website/contact"  class="w-btn w-btn-white w-btn-lg">Request a Free Quote</a>
+      <a href="/website/products" class="w-btn w-btn-lg" style="background:rgba(255,255,255,.14);color:white;border:2px solid rgba(255,255,255,.28)">Browse Products</a>
+    </div>
+  </div>
+</section>
+
+<%- include('./_footer') %>
+<script>
+function wFilter(cat,btn){
+  document.querySelectorAll('.w-filter').forEach(b=>b.classList.remove('wf-active'));
+  btn.classList.add('wf-active');
+  document.querySelectorAll('#wProdGrid .w-product').forEach(c=>{
+    c.style.display=(cat==='all'||c.dataset.cat.includes(cat))?'':'none';
+  });
+}
+</script>
+</body>
+</html>

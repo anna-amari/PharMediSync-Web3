@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>News & Updates | Robin Rose Trading</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/website.css"/>
+</head>
+<body class="w-body">
+<%- include('./_nav',{page:'news'}) %>
+<div class="w-page-hero"><div class="w-container">
+  <div class="w-breadcrumb"><a href="/website">Home</a> / News</div>
+  <h1>News & Updates</h1>
+  <p>New products, promotions, and health regulation updates.</p>
+</div></div>
+<section class="w-section"><div class="w-container">
+  <div class="w-news-grid">
+    <% news.forEach(n=>{ %>
+    <div class="w-news">
+      <div class="w-news-img"><%= n.icon %></div>
+      <div class="w-news-bd">
+        <div class="w-news-cat"><%= n.category %></div>
+        <div class="w-news-title"><%= n.title %></div>
+        <div class="w-news-exc"><%= n.excerpt %></div>
+        <div class="w-news-meta">📅 <%= n.date %> · <%= n.author %></div>
+        <a href="#" style="display:inline-block;margin-top:9px;font-size:0.76rem;font-weight:700;color:var(--w-red)">Read More →</a>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</div></section>
+<%- include('./_footer') %>
+</body></html>

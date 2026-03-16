@@ -1,0 +1,57 @@
+<% include ../partials/head %>
+<% include ../partials/sidebar %>
+<div class="main-area">
+<% include ../partials/header %>
+<div class="content">
+
+  <div class="page-header">
+    <div><h1>Announcements</h1><p>Post system-wide notices for all user groups.</p></div>
+    <a href="#postAnnouncement" class="btn btn-primary">＋ Post Announcement</a>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <% announcements.forEach(a => { %>
+    <div class="dash-card" style="border-left:4px solid">
+    <div style="color: '<%= a.priority==='High' ? 'var(--red)' : a.priority==='Medium' ? '#F59E0B' : 'var(--gray-200)' %>';"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div>
+          <strong style="font-size:0.95rem"><%= a.title %></strong>
+          <div style="font-size:0.72rem;color:var(--gray-400);margin-top:2px">📅 <%= a.date %> &nbsp;|&nbsp; 👥 <%= a.audience %></div>
+        </div>
+        <% if(a.priority==='High') { %><span class="badge badge-danger">High Priority</span>
+        <% } else if(a.priority==='Medium') { %><span class="badge badge-warning">Medium</span>
+        <% } else { %><span class="badge badge-gray">Low</span><% } %>
+      </div>
+      <p style="font-size:0.83rem;color:var(--gray-600);line-height:1.6"><%= a.body %></p>
+    </div>
+    <% }) %>
+  </div>
+
+  <!-- Post Form -->
+  <div class="form-card mt-6" id="postAnnouncement">
+    <div class="form-title">📣 Post New Announcement</div>
+    <form method="POST" action="/announcement/add">
+      <div class="form-grid">
+        <div class="form-group full"><label>Announcement Title</label><input type="text" name="title" required/></div>
+        <div class="form-group full"><label>Message / Body</label><textarea name="body" rows="4" required></textarea></div>
+        <div class="form-group">
+          <label>Target Audience</label>
+          <select name="audience">
+            <option>All Users</option><option>Admin, Staff</option>
+            <option>Suppliers</option><option>Institutional Clients</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Priority Level</label>
+          <select name="priority"><option>Low</option><option>Medium</option><option>High</option></select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Post Announcement</button>
+        <a href="/announcement" class="btn btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+</div>
+<% include ../partials/footer %>

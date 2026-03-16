@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>About Us | Robin Rose Trading</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/website.css"/>
+</head>
+<body class="w-body">
+<%- include('./_nav',{page:'about'}) %>
+<div class="w-page-hero"><div class="w-container">
+  <div class="w-breadcrumb"><a href="/website">Home</a> / About Us</div>
+  <h1>About Robin Rose Trading</h1>
+  <p>Serving Bicol's healthcare community with quality medical supplies since 2010.</p>
+</div></div>
+
+<section class="w-section"><div class="w-container">
+  <div class="w-about-grid">
+    <div style="position:relative">
+      <div class="w-about-bg">🏥</div>
+      <div class="w-about-float"><div class="yv">15+</div><div class="yl">Years of Service</div></div>
+    </div>
+    <div>
+      <div class="w-label">Our Story</div>
+      <h2 class="w-title">Bicol's Dedicated Medical Supply Partner</h2>
+      <p style="color:var(--w-gray-600);line-height:1.8;margin-bottom:14px">Robin Rose Trading was founded with a simple but powerful vision: to ensure that every healthcare provider in Bicol Region has access to high-quality, affordable medical supplies. From our base in Iriga City, we've grown into one of Camarines Sur's most trusted medical supply companies.</p>
+      <p style="color:var(--w-gray-600);line-height:1.8;margin-bottom:26px">We proudly serve LGUs, Rural Health Units, hospitals, barangay health centers, schools, and private clinics across Camarines Sur. Our commitment to genuine, FDA-licensed products and responsive service has made us the go-to partner for government procurement needs.</p>
+      <div class="w-mv">
+        <div class="w-mv-card"><h4>🎯 Our Mission</h4><p>To provide accessible, high-quality, and affordable medical supplies that support the health of communities across Bicol Region.</p></div>
+        <div class="w-mv-card"><h4>🔭 Our Vision</h4><p>To be the most trusted medical supply partner in Bicol, empowering every healthcare provider with the tools they need.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="w-section" style="background:var(--w-gray-50)"><div class="w-container">
+  <div style="text-align:center">
+    <div class="w-label" style="justify-content:center">Compliance & Certifications</div>
+    <h2 class="w-title">Fully Licensed & Certified</h2>
+  </div>
+  <div class="w-cert-grid">
+    <% [
+      {icon:'🛡️',name:'FDA License',          desc:'Food and Drug Administration licensed distributor of medical devices and pharmaceutical products.'},
+      {icon:'🏛️',name:'DTI Registration',      desc:'Registered with the Department of Trade and Industry as a legitimate business entity.'},
+      {icon:'📋',name:'PhilGEPS Member',        desc:'Philippine Government Electronic Procurement System accredited supplier.'},
+      {icon:'💰',name:'BIR Compliance',         desc:'Bureau of Internal Revenue compliant. All transactions with official receipts.'},
+      {icon:'🏥',name:'DOH Accreditation',       desc:'Department of Health recognized supplier for health commodity procurement.'},
+      {icon:'📊',name:'ISO Aligned Practices',  desc:'Operating under quality management practices aligned with international standards.'},
+      {icon:'🤝',name:'PhilHealth Partner',      desc:'Registered supplier for PhilHealth-linked healthcare facility procurement.'},
+      {icon:'🌿',name:'BHDT Compliant',          desc:'Bureau of Health Devices and Technology compliant for all medical device distribution.'},
+    ].forEach(c=>{ %>
+    <div class="w-cert"><div class="w-cert-ic"><%= c.icon %></div><div class="w-cert-nm"><%= c.name %></div><div class="w-cert-ds"><%= c.desc %></div></div>
+    <% }) %>
+  </div>
+</div></section>
+
+<section class="w-section"><div class="w-container">
+  <div style="text-align:center">
+    <div class="w-label" style="justify-content:center">Our Team</div>
+    <h2 class="w-title">The People Behind Robin Rose Trading</h2>
+  </div>
+  <div class="w-team-grid">
+    <% [
+      {icon:'👩‍💼',name:'Rosalinda Robin Rose',   role:'Founder & Owner',           desc:'With over 15 years in medical supply, Rosalinda built Robin Rose Trading from the ground up with a focus on community healthcare.'},
+      {icon:'👨‍💻',name:'Operations Manager',      role:'Operations & Procurement',  desc:'Oversees supply chain, supplier relationships, and ensures timely delivery to all institutional clients across Bicol.'},
+      {icon:'👩‍⚕️',name:'Client Relations Head',  role:'Institutional Accounts',    desc:'Manages LGU, hospital, and barangay accounts. Ensures smooth order processing and client satisfaction.'},
+    ].forEach(t=>{ %>
+    <div class="w-team"><div class="w-team-av"><%= t.icon %></div><div class="w-team-nm"><%= t.name %></div><div class="w-team-rl"><%= t.role %></div><div class="w-team-ds"><%= t.desc %></div></div>
+    <% }) %>
+  </div>
+</div></section>
+
+<section class="w-section" style="background:var(--w-gray-50)"><div class="w-container">
+  <div style="text-align:center">
+    <div class="w-label" style="justify-content:center">Company History</div>
+    <h2 class="w-title">15 Years of Growing With Bicol</h2>
+  </div>
+  <div class="w-timeline">
+    <% [
+      {year:'2010',title:'Robin Rose Trading Founded',     desc:'Established in Iriga City with a small inventory of basic medical supplies, serving local clinics and walk-in customers.'},
+      {year:'2013',title:'First LGU Contract',              desc:'Secured first major supply contract with LGU Iriga City, marking the beginning of our government procurement journey.'},
+      {year:'2016',title:'FDA License Acquired',            desc:'Obtained full FDA License as an authorized distributor of medical devices and healthcare products.'},
+      {year:'2019',title:'Expanded Product Lines',          desc:'Added diagnostics, hospital equipment, and pharmaceuticals, growing inventory to 300+ SKUs.'},
+      {year:'2022',title:'PhilGEPS Accreditation',          desc:'Became an accredited PhilGEPS supplier, enabling participation in government e-procurement.'},
+      {year:'2025',title:'PharMediSync Launch',             desc:'Launched our digital operations platform enabling institutional clients to manage orders online.'},
+    ].forEach(t=>{ %>
+    <div class="w-tl-item">
+      <div class="w-tl-year"><%= t.year %></div>
+      <div class="w-tl-card"><h4><%= t.title %></h4><p><%= t.desc %></p></div>
+    </div>
+    <% }) %>
+  </div>
+</div></section>
+
+<section class="w-cta"><div class="w-container">
+  <h2>Ready to Partner with Us?</h2>
+  <p>Become a registered institutional client and enjoy streamlined ordering and delivery.</p>
+  <div class="w-cta-btns">
+    <a href="/website/contact" class="w-btn w-btn-white w-btn-lg">Get in Touch</a>
+    <a href="/portal" class="w-btn w-btn-lg" style="background:rgba(255,255,255,.14);color:white;border:2px solid rgba(255,255,255,.28)">Client Portal</a>
+  </div>
+</div></section>
+<%- include('./_footer') %>
+</body></html>

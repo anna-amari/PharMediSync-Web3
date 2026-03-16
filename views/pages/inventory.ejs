@@ -1,0 +1,118 @@
+<%- include('../partials/head') %>
+<%- include('../partials/sidebar') %>
+<div class="main-area">
+<%- include('../partials/header') %>
+<div class="content">
+
+  <div class="page-header">
+    <div>
+      <h1>Inventory Management</h1>
+      <p>Track products, batches, expiry dates, and stock levels.</p>
+    </div>
+    <button class="btn btn-primary" onclick="document.getElementById('addForm').scrollIntoView({behavior:'smooth'})">＋ Add Product</button>
+  </div>
+
+  <!-- Summary KPIs -->
+  <div class="kpi-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px">
+    <div class="kpi-card white">
+      <div class="kpi-value"><%= inventory.length %></div>
+      <div class="kpi-label">Total SKUs</div>
+    </div>
+    <div class="kpi-card white">
+      <div class="kpi-value"><%= inventory.filter(i=>i.status==='Low Stock').length %></div>
+      <div class="kpi-label">Low Stock</div>
+    </div>
+    <div class="kpi-card white">
+      <div class="kpi-value"><%= inventory.filter(i=>i.status==='Near Expiry').length %></div>
+      <div class="kpi-label">Near Expiry</div>
+    </div>
+    <div class="kpi-card white">
+      <div class="kpi-value"><%= inventory.reduce((s,i)=>s+i.qty,0) %></div>
+      <div class="kpi-label">Total Units</div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card">
+    <div class="table-header">
+      <h2>Product Inventory</h2>
+      <div class="flex gap-3">
+        <input type="text" placeholder="Search products…" style="padding:7px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:0.8rem" id="searchBox" oninput="filterTable()"/>
+      </div>
+    </div>
+    <table id="inventoryTable">
+      <thead>
+        <tr>
+          <th>ID</th><th>Product Name</th><th>Category</th><th>Batch</th>
+          <th>Qty</th><th>Unit</th><th>Expiry Date</th><th>Status</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% inventory.forEach(item => { %>
+        <tr>
+          <td><span style="font-size:0.72rem;color:var(--gray-400)"><%= item.id %></span></td>
+          <td><strong><%= item.name %></strong></td>
+          <td><%= item.category %></td>
+          <td><span style="font-family:monospace;font-size:0.78rem"><%= item.batch %></span></td>
+          <td><strong><%= item.qty %></strong></td>
+          <td><%= item.unit %></td>
+          <td><%= item.expiry %></td>
+          <td>
+            <% if(item.status==='Good') { %><span class="badge badge-success">Good</span>
+            <% } else if(item.status==='Low Stock') { %><span class="badge badge-warning">Low Stock</span>
+            <% } else { %><span class="badge badge-danger">Near Expiry</span><% } %>
+          </td>
+          <td>
+            <button class="btn btn-outline btn-sm">Edit</button>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Add Form -->
+  <div class="form-card mt-6" id="addForm">
+    <div class="form-title">➕ Add New Product / Batch</div>
+    <form method="POST" action="/inventory/add">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Product Name</label>
+          <input type="text" name="name" placeholder="e.g. Paracetamol 500mg" required/>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select name="category">
+            <option>Medicine</option><option>Consumable</option>
+            <option>Equipment</option><option>PPE</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Batch Number</label>
+          <input type="text" name="batch" placeholder="e.g. B-2025-01" required/>
+        </div>
+        <div class="form-group">
+          <label>Quantity</label>
+          <input type="number" name="qty" min="0" placeholder="0" required/>
+        </div>
+        <div class="form-group">
+          <label>Unit</label>
+          <select name="unit">
+            <option>pcs</option><option>tabs</option><option>btls</option>
+            <option>rolls</option><option>boxes</option><option>prs</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Expiry Date</label>
+          <input type="date" name="expiry" required/>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Product</button>
+        <a href="/inventory" class="btn btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+</div>
+<%- include('../partials/footer') %>

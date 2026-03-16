@@ -1,0 +1,42 @@
+<aside class="portal-sidebar">
+  <div class="sidebar-brand">
+    <h1>💊 PharMediSync</h1>
+    <p>Client Portal</p>
+  </div>
+  <div class="sidebar-role"><%= client.name %></div>
+  <nav class="sidebar-nav">
+    <a href="/portal" class="<%= active === 'home' ? 'active' : '' %>">
+      <span class="nav-icon">🏠</span> Home Dashboard
+    </a>
+    <a href="/portal/catalog" class="<%= active === 'catalog' ? 'active' : '' %>">
+      <span class="nav-icon">📦</span> Product Catalog
+    </a>
+    <a href="/portal/orders" class="<%= active === 'orders' ? 'active' : '' %>">
+      <span class="nav-icon">📋</span> Purchase Order Management
+    </a>
+    <a href="/portal/delivery" class="<%= active === 'delivery' ? 'active' : '' %>">
+      <span class="nav-icon">🚚</span> Delivery Schedule
+    </a>
+    <a href="/portal/tracking" class="<%= active === 'tracking' ? 'active' : '' %>">
+      <span class="nav-icon">📍</span> Order Tracking
+    </a>
+    <a href="/portal/history" class="<%= active === 'history' ? 'active' : '' %>">
+      <span class="nav-icon">🕐</span> Transaction History
+    </a>
+    <a href="/portal/invoices" class="<%= active === 'invoices' ? 'active' : '' %>">
+      <span class="nav-icon">🧾</span> Invoice and Payment Records
+    </a>
+    <a href="/portal/profile" class="<%= active === 'profile' ? 'active' : '' %>">
+      <span class="nav-icon">👤</span> Profile Management
+    </a>
+    <a href="/portal/notifications" class="<%= active === 'notifications' ? 'active' : '' %>">
+      <span class="nav-icon">🔔</span> Notifications
+      <% if(unread > 0) { %>
+        <span class="notif-dot"><%= unread %></span>
+      <% } %>
+    </a>
+    <a href="/">
+      <span class="nav-icon">🚪</span> Log Out
+    </a>
+  </nav>
+</aside>

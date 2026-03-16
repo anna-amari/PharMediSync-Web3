@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Product Catalog | Robin Rose Trading</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/website.css"/>
+</head>
+<body class="w-body">
+<%- include('./_nav',{page:'products'}) %>
+<div class="w-page-hero">
+  <div class="w-container">
+    <div class="w-breadcrumb"><a href="/website">Home</a> / Products</div>
+    <h1>Product Catalog</h1>
+    <p>500+ medical supplies from globally trusted brands — always in stock.</p>
+  </div>
+</div>
+<section class="w-section-sm">
+  <div class="w-container">
+    <div class="w-search-bar">
+      <input type="text" placeholder="🔍 Search by name, SKU, or brand…" id="wSearch" oninput="wSearchFn()"/>
+      <button>Search</button>
+    </div>
+    <div class="w-catalog-layout">
+      <aside class="w-sidebar-filters">
+        <div class="w-filter-group">
+          <h4>Category</h4>
+          <% ['Diagnostics','PPE & Safety','Surgical','Equipment','Pharmaceuticals','Hygiene'].forEach(c=>{ %>
+          <label class="w-filter-check"><input type="checkbox" value="<%= c.toLowerCase() %>"/> <%= c %></label>
+          <% }) %>
+        </div>
+        <div class="w-filter-group">
+          <h4>Brand</h4>
+          <% ['Blue Cross','Indoplas','Rossmax','3M','Ansell','BD Medical'].forEach(b=>{ %>
+          <label class="w-filter-check"><input type="checkbox"/> <%= b %></label>
+          <% }) %>
+        </div>
+        <div class="w-filter-group">
+          <h4>Availability</h4>
+          <label class="w-filter-check"><input type="checkbox"/> In Stock Only</label>
+        </div>
+        <div class="w-filter-group">
+          <h4>Price Range</h4>
+          <input type="range" min="0" max="5000" value="5000" style="width:100%;accent-color:var(--w-red)" oninput="document.getElementById('wPriceVal').textContent='₱'+this.value"/>
+          <div style="font-size:0.73rem;color:var(--w-gray-400);margin-top:4px">Up to: <span id="wPriceVal">₱5000</span></div>
+        </div>
+        <button class="w-btn w-btn-red" style="width:100%">Apply Filters</button>
+        <button class="w-btn w-btn-out w-btn-sm" style="width:100%;margin-top:7px" onclick="document.querySelectorAll('.w-product').forEach(c=>c.style.display='')">Clear All</button>
+      </aside>
+      <div>
+        <div class="w-results-hdr">
+          <span class="w-results-count" id="wCount"><%= products.length %> products found</span>
+          <select style="padding:6px 11px;border:1.5px solid var(--w-gray-200);border-radius:8px;font-size:0.78rem;outline:none;font-family:'DM Sans',sans-serif">
+            <option>Sort: Featured</option><option>Price: Low–High</option><option>Price: High–Low</option><option>Name: A–Z</option>
+          </select>
+        </div>
+        <div class="w-products-grid-3" id="wProdGrid2">
+          <% products.forEach(p=>{ %>
+          <div class="w-product" data-name="<%= p.name.toLowerCase() %>" data-sku="<%= p.sku.toLowerCase() %>" data-brand="<%= p.brand.toLowerCase() %>">
+            <div class="w-prod-img"><%= p.icon %><% if(p.badge){%><span class="w-prod-badge"><%= p.badge %></span><%}%></div>
+            <div class="w-prod-body">
+              <div class="w-prod-sku">SKU: <%= p.sku %> · <span style="color:var(--w-gray-400)"><%= p.brand %></span></div>
+              <div class="w-prod-name"><%= p.name %></div>
+              <div class="w-prod-desc"><%= p.desc %></div>
+              <div class="w-prod-foot">
+                <div>
+                  <div class="w-prod-price"><%= p.price?'₱'+p.price.toLocaleString():'Quote' %><% if(p.price&&p.unit){%><small> / <%= p.unit %></small><%}%></div>
+                  <span class="<%= p.stock==='In Stock'?'w-stock-in':'w-stock-low' %>"><%= p.stock %></span>
+                </div>
+                <a href="/website/contact" class="w-btn w-btn-red w-btn-sm">Order</a>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<%- include('./_footer') %>
+<script>
+function wSearchFn(){
+  const q=document.getElementById('wSearch').value.toLowerCase();
+  const cards=document.querySelectorAll('#wProdGrid2 .w-product');
+  let v=0;
+  cards.forEach(c=>{ const m=c.dataset.name.includes(q)||c.dataset.sku.includes(q)||c.dataset.brand.includes(q); c.style.display=m?'':'none'; if(m)v++; });
+  document.getElementById('wCount').textContent=v+' products found';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Contact Us | Robin Rose Trading</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/website.css"/>
+</head>
+<body class="w-body">
+<%- include('./_nav',{page:'contact'}) %>
+<div class="w-page-hero"><div class="w-container">
+  <div class="w-breadcrumb"><a href="/website">Home</a> / Contact</div>
+  <h1>Contact & Inquiry</h1>
+  <p>Get in touch for quotes, orders, or questions about our products and services.</p>
+</div></div>
+<section class="w-section"><div class="w-container">
+  <div class="w-contact-grid">
+    <div>
+      <div class="w-label">Get In Touch</div>
+      <h2 class="w-title" style="font-size:1.75rem">We're Here to Help</h2>
+      <p style="color:var(--w-gray-600);font-size:0.88rem;line-height:1.75;margin-bottom:28px">Whether you need a product quote, bulk order, or just have questions — reach out and our team will respond within one business day.</p>
+      <div class="w-contact-info">
+        <% [
+          {icon:'📍',title:'Visit Our Store',  body:'Ortega St. San Roque, Iriga City<br/>Camarines Sur, Bicol Region, Philippines'},
+          {icon:'📞',title:'Call or Text',      body:'<a href="tel:09292379053">0929 237 9053</a>'},
+          {icon:'✉️',title:'Email Us',          body:'<a href="mailto:redrosalinda7876@gmail.com">redrosalinda7876@gmail.com</a>'},
+          {icon:'🌐',title:'Website',           body:'<a href="https://robinrosetrading.com" target="_blank">robinrosetrading.com</a>'},
+          {icon:'⏰',title:'Business Hours',    body:'Mon–Sat: 8:00 AM – 6:00 PM<br/>Sunday: By appointment only'},
+          {icon:'🚚',title:'Services',          body:'In-store shopping · In-store pickup · Delivery across Bicol Region'},
+        ].forEach(c=>{ %>
+        <div class="w-ci"><div class="w-ci-ic"><%= c.icon %></div><div class="w-ci-dt"><h4><%= c.title %></h4><p><%- c.body %></p></div></div>
+        <% }) %>
+      </div>
+      <div class="w-map"><span style="font-size:2rem">🗺️</span><span>Ortega St. San Roque, Iriga City, Camarines Sur</span><a href="https://maps.google.com/?q=Ortega+St+San+Roque+Iriga+City" target="_blank">Open in Google Maps →</a></div>
+    </div>
+    <div class="w-form-card">
+      <h3>Send Us a Message</h3>
+      <div class="w-success" id="wSuccess">✅ Thank you! Your inquiry has been sent. We'll respond within 1 business day.</div>
+      <form onsubmit="wSubmit(event)">
+        <div class="w-form-row">
+          <div class="w-form-group"><label>First Name *</label><input type="text" placeholder="Juan" required/></div>
+          <div class="w-form-group"><label>Last Name *</label><input type="text" placeholder="dela Cruz" required/></div>
+        </div>
+        <div class="w-form-group"><label>Organization / Company</label><input type="text" placeholder="e.g. LGU Iriga City, RHU Baao"/></div>
+        <div class="w-form-row">
+          <div class="w-form-group"><label>Phone *</label><input type="tel" placeholder="09XX XXX XXXX" required/></div>
+          <div class="w-form-group"><label>Email *</label><input type="email" placeholder="juan@example.com" required/></div>
+        </div>
+        <div class="w-form-group">
+          <label>Inquiry Type</label>
+          <select><option>Request a Quote</option><option>Product Information</option><option>Bulk / Government Order</option><option>Delivery Inquiry</option><option>Become a Client</option><option>Other</option></select>
+        </div>
+        <div class="w-form-group"><label>Products Needed</label><input type="text" placeholder="e.g. BP apparatus x10, Gauze rolls x50"/></div>
+        <div class="w-form-group"><label>Message *</label><textarea rows="5" placeholder="Tell us more about your needs, quantities, delivery location, or any special requirements…" required></textarea></div>
+        <button type="submit" class="w-btn w-btn-red" style="width:100%;justify-content:center;padding:13px">Send Inquiry →</button>
+      </form>
+    </div>
+  </div>
+</div></section>
+<%- include('./_footer') %>
+<script>
+function wSubmit(e){ e.preventDefault(); const m=document.getElementById('wSuccess'); m.style.display='block'; e.target.reset(); m.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+</script>
+</body></html>

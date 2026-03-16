@@ -1,0 +1,98 @@
+<%- include('../partials/head') %>
+<%- include('../partials/sidebar') %>
+<div class="main-area">
+<%- include('../partials/header') %>
+<div class="content">
+
+  <div class="page-header">
+    <div><h1>Reports &amp; Analytics</h1><p>Monthly sales, inventory movement, and supplier performance.</p></div>
+    <button class="btn btn-primary" onclick="window.print()">⬇ Export PDF</button>
+  </div>
+
+  <!-- Monthly Sales -->
+  <div class="table-card">
+    <div class="table-header"><h2>📊 Monthly Sales Summary</h2></div>
+    <table>
+      <thead><tr><th>Month</th><th>Gross Sales</th><th>VATable Sales</th><th>VAT (12%)</th><th>Net Sales</th><th>Trend</th></tr></thead>
+      <tbody>
+        <% reportData.monthlySales.forEach((r,i) => { %>
+        <tr>
+          <td><strong><%= r.month %></strong></td>
+          <td>₱<%= r.gross.toLocaleString() %></td>
+          <td>₱<%= r.vatable.toLocaleString() %></td>
+          <td>₱<%= r.vat.toLocaleString() %></td>
+          <td><strong>₱<%= r.net.toLocaleString() %></strong></td>
+          <td>
+            <span class="trend <%= i>0 && r.gross > reportData.monthlySales[i-1].gross ? 'up' : i>0 ? 'down' : 'flat' %>">
+              <% if(i>0 && r.gross > reportData.monthlySales[i-1].gross) { %>▲ Up
+              <% } else if(i>0) { %>▼ Down
+              <% } else { %>—
+              <% } %>
+            </span>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bar Chart visual -->
+  <div class="dash-card mt-6">
+    <h3>Monthly Sales Bar Chart</h3>
+    <div class="bar-chart">
+      <% reportData.monthlySales.forEach(r => { %>
+        <% const pct = Math.round((r.gross / 140000) * 100) %>
+        <div class="bar-column">
+          <span style="font-size:0.62rem;color:var(--gray-400)">₱<%= (r.gross/1000).toFixed(0) %>K</span>
+          <div class="bar" data-height="<%= pct %>"></div>
+      <% }) %>
+    </div>
+  </div>
+
+  <!-- Inventory Movement -->
+  <div class="table-card mt-6">
+    <div class="table-header"><h2>📦 Inventory Movement Report</h2></div>
+    <table>
+      <thead><tr><th>Product</th><th>Received</th><th>Sold</th><th>Adjusted</th><th>Closing Stock</th></tr></thead>
+      <tbody>
+        <% reportData.inventoryMovement.forEach(r => { %>
+        <tr>
+          <td><strong><%= r.product %></strong></td>
+          <td><span class="badge badge-info"><%= r.received %></span></td>
+          <td><span class="badge badge-warning"><%= r.sold %></span></td>
+          <td><%= r.adjusted %></td>
+          <td><strong><%= r.closing %></strong></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Supplier Performance -->
+  <div class="table-card mt-6">
+    <div class="table-header"><h2>🏭 Supplier Performance</h2></div>
+    <table>
+      <thead><tr><th>Supplier</th><th>Total Orders</th><th>On-Time Deliveries</th><th>Defects</th><th>Score</th></tr></thead>
+      <tbody>
+        <% reportData.supplierPerformance.forEach(r => { %>
+        <tr>
+          <td><strong><%= r.supplier %></strong></td>
+          <td><%= r.orders %></td>
+          <td><span class="badge badge-success"><%= r.onTime %>/<%= r.orders %></span></td>
+          <td><% if(r.defects>0) { %><span class="badge badge-danger"><%= r.defects %></span><% } else { %><span class="badge badge-success">0</span><% } %></td>
+          <td><span style="color:var(--red);font-weight:800">★ <%= r.score %></span></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.bar[data-height]').forEach(el => {
+      el.style.height = el.dataset.height + '%';
+    });
+  });
+</script>
+<%- include('../partials/footer') %>

@@ -1,0 +1,73 @@
+<%- include('../partials/head') %>
+<%- include('../partials/sidebar') %>
+<div class="main-area">
+<%- include('../partials/header') %>
+<div class="content" style="padding-bottom:0">
+
+  <div class="page-header" style="margin-bottom:16px">
+    <div><h1>Point of Sale</h1><p>Process walk-in customer transactions.</p></div>
+    <span class="badge badge-success" style="font-size:0.8rem;padding:8px 14px">🟢 Terminal Active</span>
+  </div>
+
+  <div class="pos-layout">
+    <!-- Product Grid -->
+    <div class="pos-products">
+      <div class="pos-search">
+        <input type="text" placeholder="🔍 Search products or scan barcode…" id="posSearch" oninput="filterPos()"/>
+      </div>
+      <div class="pos-grid" id="posGrid">
+        <% products.forEach(p => { %>
+        <div class="product-tile" onclick="addToCart('<%= p.id %>','<%= p.name %>',<%= p.price %>)" data-name="<%= p.name.toLowerCase() %>">
+          <div class="pt-icon"><%= p.icon %></div>
+          <div class="pt-name"><%= p.name %></div>
+          <div class="pt-price">₱<%= p.price.toLocaleString() %></div>
+          <div style="font-size:0.68rem;color:var(--gray-400);margin-top:2px">Stock: <%= p.stock %></div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- Cart -->
+    <div class="pos-cart">
+      <div class="pos-cart-header">🛒 Current Transaction <span id="cartCount" style="color:var(--red)">(0 items)</span></div>
+      <div class="cart-items" id="cartItems">
+        <div style="text-align:center;padding:30px;color:var(--gray-400);font-size:0.82rem">
+          Tap a product to add it to the cart
+        </div>
+      </div>
+      <div class="pos-total">
+        <div class="total-row"><span>Subtotal</span><span id="subtotal">₱0.00</span></div>
+        <div class="total-row"><span>VAT (12%)</span><span id="vat">₱0.00</span></div>
+        <div class="total-row grand"><span>TOTAL</span><span id="grandTotal">₱0.00</span></div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="pay-btn" style="background:var(--gray-200);color:var(--gray-600);flex:1" onclick="clearCart()">✕ Clear</button>
+          <button class="pay-btn" style="flex:2" onclick="processPayment()">💳 Process Payment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="table-card" style="margin-top:20px">
+    <div class="table-header"><h2>Today's Transactions</h2><span class="badge badge-info">Live</span></div>
+    <table>
+      <thead><tr><th>OR No.</th><th>Items</th><th>Subtotal</th><th>VAT</th><th>Total</th><th>Method</th><th>Time</th><th>Actions</th></tr></thead>
+      <tbody>
+        <% recentTransactions.forEach(t => { %>
+        <tr>
+          <td><strong><%= t.id %></strong></td>
+          <td><%= t.items %></td>
+          <td>₱<%= t.subtotal.toLocaleString() %></td>
+          <td>₱<%= t.vat.toFixed(2) %></td>
+          <td><strong>₱<%= t.total.toFixed(2) %></strong></td>
+          <td><% if(t.method==='GCash') { %><span class="badge badge-info">GCash</span><% } else { %><span class="badge badge-gray">Cash</span><% } %></td>
+          <td><span style="color:var(--gray-400);font-size:0.78rem"><%= t.time %></span></td>
+          <td><button class="btn btn-outline btn-sm">🖨 Receipt</button></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<%- include('../partials/footer') %>

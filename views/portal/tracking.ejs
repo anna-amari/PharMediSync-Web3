@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title><%= title %> | PharMediSync</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="stylesheet" href="/css/portal.css"/>
+</head>
+<body>
+<div class="app-shell">
+  <% include ./sidebar %>
+  <div class="main-area">
+    <header class="top-header">
+      <span class="page-title"><%= title %></span>
+      <div class="header-actions">
+        <a href="/portal/notifications" class="header-badge">🔔 <%= unread %> New</a>
+        <div class="avatar"><%= client.contact.charAt(0) %></div>
+      </div>
+    </header>
+    <div class="content">
+
+      <div class="page-header">
+        <div><h1>Order Tracking</h1><p>Real-time status of your active orders.</p></div>
+      </div>
+
+      <% orders.forEach(o => { %>
+      <div class="dash-card mt-4">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div>
+            <strong style="font-size:1rem"><%= o.id %></strong>
+            <span style="color:var(--gray-400);font-size:0.78rem;margin-left:8px"><%= o.date %> &nbsp;·&nbsp; ₱<%= o.total.toLocaleString() %></span>
+          </div>
+          <% if(o.status==='Completed') { %><span class="badge badge-success">Completed</span>
+          <% } else { %><span class="badge badge-warning">Active</span><% } %>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="tracking-steps">
+          <% const steps = ['Order Placed','Processing','Dispatched','In Transit','Delivered'];
+             const stepIndex = o.delivery==='Delivered' ? 4 : o.delivery==='In Transit' ? 3 : o.payment!=='Unpaid' ? 2 : 1;
+          %>
+          <% steps.forEach((step, i) => { %>
+          <div class="track-step <%= i <= stepIndex ? 'done' : '' %>">
+            <div class="track-dot"><%= i <= stepIndex ? '✓' : (i+1) %></div>
+            <div class="track-label"><%= step %></div>
+          </div>
+          <% if(i < steps.length-1) { %><div class="track-line <%= i < stepIndex ? 'done' : '' %>"></div><% } %>
+          <% }) %>
+        </div>
+
+      </div>
+      <% }) %>
+
+    </div>
+  </div>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>
