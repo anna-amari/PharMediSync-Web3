@@ -3,7 +3,7 @@ const router  = express.Router();
 
 const currentClient = {
   id: 'CL-001', name: 'LGU Iriga City',
-  contact: 'Hon. Madelaine Gazmen', phone: '09171110001',
+  contact: 'Mr. Kael Chua', phone: '09171110001',
   email: 'lgu@irigacity.gov.ph', type: 'LGU',
   creditLimit: 200000, balance: 45000
 };
@@ -51,7 +51,7 @@ const announcements = [
 
 // Home
 router.get('/', (req, res) => {
-  res.render('portal/home', {
+  res.render('client-portal/home', {
     title: 'Client Dashboard', active: 'home',
     client: currentClient, orders, notifications,
     unread: notifications.filter(n => !n.read).length
@@ -60,7 +60,7 @@ router.get('/', (req, res) => {
 
 // Product Catalog
 router.get('/catalog', (req, res) => {
-  res.render('portal/catalog', {
+  res.render('client-portal/catalog', {
     title: 'Product Catalog', active: 'catalog',
     client: currentClient, catalog,
     unread: notifications.filter(n => !n.read).length
@@ -69,14 +69,14 @@ router.get('/catalog', (req, res) => {
 
 // Purchase Order Management
 router.get('/orders', (req, res) => {
-  res.render('portal/orders', {
+  res.render('client-portal/orders', {
     title: 'Purchase Order Management', active: 'orders',
     client: currentClient, orders, catalog,
     unread: notifications.filter(n => !n.read).length
   });
 });
 
-router.post('/orders/place', (req, res) => {
+router.post('/client-orders/place', (req, res) => {
   orders.unshift({
     id:       'SO-' + (2050 + orders.length),
     date:     new Date().toISOString().split('T')[0],
@@ -86,12 +86,12 @@ router.post('/orders/place', (req, res) => {
     delivery: 'Pending',
     status:   'Active'
   });
-  res.redirect('/portal/orders');
+  res.redirect('/client-portal/orders');
 });
 
 // Delivery Schedule
 router.get('/delivery', (req, res) => {
-  res.render('portal/delivery', {
+  res.render('client-portal/delivery', {
     title: 'Delivery Schedule', active: 'delivery',
     client: currentClient, deliveries,
     unread: notifications.filter(n => !n.read).length
@@ -100,7 +100,7 @@ router.get('/delivery', (req, res) => {
 
 // Order Tracking
 router.get('/tracking', (req, res) => {
-  res.render('portal/tracking', {
+  res.render('client-portal/tracking', {
     title: 'Order Tracking', active: 'tracking',
     client: currentClient, orders, deliveries,
     unread: notifications.filter(n => !n.read).length
@@ -109,7 +109,7 @@ router.get('/tracking', (req, res) => {
 
 // Transaction History
 router.get('/history', (req, res) => {
-  res.render('portal/history', {
+  res.render('client-portal/history', {
     title: 'Transaction History', active: 'history',
     client: currentClient, orders,
     unread: notifications.filter(n => !n.read).length
@@ -118,7 +118,7 @@ router.get('/history', (req, res) => {
 
 // Invoices
 router.get('/invoices', (req, res) => {
-  res.render('portal/invoices', {
+  res.render('client-portal/invoices', {
     title: 'Invoice and Payment Records', active: 'invoices',
     client: currentClient, invoices,
     totalUnpaid: invoices.filter(i => !i.paid).reduce((s,i) => s + i.amount, 0),
@@ -128,7 +128,7 @@ router.get('/invoices', (req, res) => {
 
 // Profile
 router.get('/profile', (req, res) => {
-  res.render('portal/profile', {
+  res.render('client-portal/profile', {
     title: 'Profile Management', active: 'profile',
     client: currentClient,
     unread: notifications.filter(n => !n.read).length
@@ -137,7 +137,7 @@ router.get('/profile', (req, res) => {
 
 // Notifications & Announcements
 router.get('/notifications', (req, res) => {
-  res.render('portal/notifications', {
+  res.render('client-portal/notifications', {
     title: 'Notifications & Announcements', active: 'notifications',
     client: currentClient, notifications, announcements,
     unread: notifications.filter(n => !n.read).length
@@ -149,7 +149,7 @@ router.get('/test', (req, res) => {
   console.log('Test route accessed');
   console.log('Current views path:', req.app.get('views'));
   
-  res.render('portal/test', {
+  res.render('client-portal/test', {
     title: 'Test Page',
     client: {
       name: 'Test Client',

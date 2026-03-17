@@ -14,7 +14,7 @@
     <header class="top-header">
       <span class="page-title"><%= title %></span>
       <div class="header-actions">
-        <a href="/portal/notifications" class="header-badge">🔔 <%= unread %> New</a>
+        <a href="/client-portal/notifications" class="header-badge">🔔 <%= unread %> New</a>
         <div class="avatar"><%= client.contact.charAt(0) %></div>
       </div>
     </header>
@@ -49,7 +49,7 @@
               <span class="badge badge-success">In Stock: <%= p.stock %></span>
             <% } %>
           </div>
-          <a href="/portal/orders" class="btn btn-primary btn-sm" style="margin-top:10px;width:100%;justify-content:center">Order Now</a>
+          <a href="/client-portal/orders" class="btn btn-primary btn-sm" style="margin-top:10px;width:100%;justify-content:center">Order Now</a>
         </div>
         <% }) %>
       </div>

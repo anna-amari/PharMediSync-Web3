@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 });
 
 // Institutional Client Portal (separate role view)
-router.get('/portal', (req, res) => {
+router.get('/client-portal', (req, res) => {
   res.render('pages/client-portal', {
     title:  'Client Portal',
     active: 'client',

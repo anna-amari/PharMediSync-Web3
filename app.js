@@ -26,12 +26,13 @@ app.use('/bir',          require('./routes/bir'));
 app.use('/chatbot',      require('./routes/chatbot'));
 app.use('/announcement', require('./routes/announcement'));
 
-app.use('/portal', require('./routes/client-portal'));
+app.use('/client-portal', require('./routes/client-portal'));
 const clientPortalRoutes = require('./routes/client-portal');
-app.use('/portal', clientPortalRoutes);
+app.use('/client-portal', clientPortalRoutes);
 
 app.use('/website', require('./routes/website'));
 
+// ERROR HANDLING
 app.use((req, res) => {
   res.status(404).render('pages/404', { title: '404 – Not Found', active: '' });
 });

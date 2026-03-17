@@ -14,7 +14,7 @@
   <div class="app-shell">
 
     <!-- Sidebar -->
-    <aside class="portal-sidebar">
+    <aside class="client-portal-sidebar">
       <div class="sidebar-brand">
         <h1>💊 PharMediSync</h1>
         <p>Client Portal</p>
@@ -23,31 +23,31 @@
       <div class="sidebar-role"><%= client.name %></div>
 
       <nav class="sidebar-nav">
-        <a href="/portal" class="<%= active==='home' ? 'active':'' %>">
+        <a href="/client-portal" class="<%= active==='home' ? 'active':'' %>">
           <span class="nav-icon">🏠</span> Home Dashboard
         </a>
-        <a href="/portal/catalog" class="<%= active==='catalog' ? 'active':'' %>">
+        <a href="/client-portal/catalog" class="<%= active==='catalog' ? 'active':'' %>">
           <span class="nav-icon">📦</span> Product Catalog
         </a>
-        <a href="/portal/orders" class="<%= active==='orders' ? 'active':'' %>">
+        <a href="/client-portal/orders" class="<%= active==='orders' ? 'active':'' %>">
           <span class="nav-icon">📋</span> Purchase Order Management
         </a>
-        <a href="/portal/delivery" class="<%= active==='delivery' ? 'active':'' %>">
+        <a href="/client-portal/delivery" class="<%= active==='delivery' ? 'active':'' %>">
           <span class="nav-icon">🚚</span> Delivery Schedule
         </a>
-        <a href="/portal/tracking" class="<%= active==='tracking' ? 'active':'' %>">
+        <a href="/client-portal/tracking" class="<%= active==='tracking' ? 'active':'' %>">
           <span class="nav-icon">📍</span> Order Tracking
         </a>
-        <a href="/portal/history" class="<%= active==='history' ? 'active':'' %>">
+        <a href="/client-portal/history" class="<%= active==='history' ? 'active':'' %>">
           <span class="nav-icon">🕐</span> Transaction History
         </a>
-        <a href="/portal/invoices" class="<%= active==='invoices' ? 'active':'' %>">
+        <a href="/client-portal/invoices" class="<%= active==='invoices' ? 'active':'' %>">
           <span class="nav-icon">🧾</span> Invoice and Payment Records
         </a>
-        <a href="/portal/profile" class="<%= active==='profile' ? 'active':'' %>">
+        <a href="/client-portal/profile" class="<%= active==='profile' ? 'active':'' %>">
           <span class="nav-icon">👤</span> Profile Management
         </a>
-        <a href="/portal/notifications" class="<%= active==='notifications' ? 'active':'' %>">
+        <a href="/client-portal/notifications" class="<%= active==='notifications' ? 'active':'' %>">
           <span class="nav-icon">🔔</span> Notifications
           <% if(unread > 0) { %>
             <span class="notif-dot"><%= unread %></span>
@@ -64,7 +64,7 @@
       <header class="top-header">
         <span class="page-title"><%= title %></span>
         <div class="header-actions">
-          <a href="/portal/notifications" class="header-badge">🔔 <%= unread %> New</a>
+          <a href="/client-portal/notifications" class="header-badge">🔔 <%= unread %> New</a>
           <span class="header-badge">📅 <%= new Date().toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'}) %></span>
           <div class="avatar"><%= client.contact.charAt(0) %></div>
         </div>
@@ -76,7 +76,7 @@
             <h1>Welcome, <%= client.contact %>!</h1>
             <p><%= client.name %> &nbsp;·&nbsp; <%= client.type %></p>
           </div>
-          <a href="/portal/orders" class="btn btn-primary">＋ Place New Order</a>
+          <a href="/client-portal/orders" class="btn btn-primary">＋ Place New Order</a>
         </div>
 
         <!-- KPIs -->
@@ -91,7 +91,7 @@
         <div class="table-card mt-6">
           <div class="table-header">
             <h2>Recent Orders</h2>
-            <a href="/portal/orders" class="btn btn-outline btn-sm">View All</a>
+            <a href="/client-portal/orders" class="btn btn-outline btn-sm">View All</a>
           </div>
           <table>
             <thead>
@@ -122,7 +122,7 @@
                   <% } else if(o.delivery==='In Transit') { %><span class="badge badge-info">In Transit</span>
                   <% } else { %><span class="badge badge-gray">Pending</span><% } %>
                 </td>
-                <td><a href="/portal/tracking" class="btn btn-outline btn-sm">Track</a></td>
+                <td><a href="/client-portal/tracking" class="btn btn-outline btn-sm">Track</a></td>
               </tr>
               <% }) %>
             </tbody>
@@ -144,7 +144,7 @@
             </div>
             <% }) %>
           </div>
-          <a href="/portal/notifications" class="btn btn-outline btn-sm mt-4">View All Notifications</a>
+          <a href="/client-portal/notifications" class="btn btn-outline btn-sm mt-4">View All Notifications</a>
         </div>
 
       </div> <!-- end content -->
